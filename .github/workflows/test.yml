@@ -18,7 +18,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt file found. Skipping dependency installation."
+          fi
       - name: Run validation
         run: python3 gaia_v67.py --mode test > results.json
       - uses: actions/upload-artifact@v4
@@ -34,7 +40,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt file found. Skipping dependency installation."
+          fi
       - name: Run benchmark
         run: python3 gaia_v67.py --mode benchmark --cycles 1000 > benchmark.json
       - uses: actions/upload-artifact@v4
