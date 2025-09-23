@@ -1,0 +1,16 @@
+# Test and benchmark output files
+results.json
+benchmark.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
