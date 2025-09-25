@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  gaia-core:
+    build: .
+    container_name: gaia-core
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9091:9090"
+    environment:
+      - GAIA_MODE=production
+    volumes:
+      - ./data:/tmp
+    networks:
+      - gaia-net
+
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: gaia-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - gaia-net
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: gaia-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=gaia123
+    ports:
+      - "3000:3000"
+    networks:
+      - gaia-net
+    depends_on:
+      - prometheus
+
+networks:
+  gaia-net:
+    driver: bridge
+
+volumes:
+  prometheus-data:
