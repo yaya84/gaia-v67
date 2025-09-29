@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
 from gaia_v67 import GAIA, Config
-import asyncio, random
+import asyncio
 
 app=FastAPI(title="GAIA v6.7 API")
 gaia=GAIA(Config())
@@ -16,7 +17,7 @@ async def event(cpu:float=0.5,memory:float=0.5,network:float=0.0):
 @app.get("/status")
 async def status(): return {"consciousness":gaia.consciousness,"cycles":gaia.cycle_count}
 
-from fastapi.responses import PlainTextResponse  # + import
+
 
 @app.get("/metrics", response_class=PlainTextResponse)
 async def metrics():
